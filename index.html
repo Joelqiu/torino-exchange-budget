@@ -189,10 +189,10 @@
           <div><p class="eyebrow">BUDGET OVERVIEW</p><h2 id="summary-title">一年預算摘要</h2></div>
           <span class="year-tag">12 個月</span>
         </div>
-        <p class="primary-total" id="total-expenses" aria-live="polite">NT$ 1,200,000</p>
+        <p class="primary-total" id="total-expenses" aria-live="polite">NT$ 1,240,000</p>
         <div class="total-label">交換一年總花費預算</div>
         <div class="summary-divider"></div>
-        <div class="stat-row"><span class="stat-label"><span class="swatch" aria-hidden="true"></span>建議列入補助</span><strong id="total-grant">NT$ 990,000</strong></div>
+        <div class="stat-row"><span class="stat-label"><span class="swatch" aria-hidden="true"></span>建議列入補助</span><strong id="total-grant">NT$ 1,030,000</strong></div>
         <div class="stat-row"><span class="stat-label"><span class="swatch swatch-muted" aria-hidden="true"></span>未列入補助</span><strong id="total-personal">NT$ 210,000</strong></div>
         <div class="budget-bar" role="img" aria-label="補助預算與未列入補助預算比例"><span class="bar-grant" id="grant-bar"></span><span class="bar-other" id="personal-bar"></span></div>
         <div class="ratio-caption"><span id="grant-ratio">補助規劃 82.5%</span><span id="personal-ratio">其他支出 17.5%</span></div>
@@ -208,7 +208,7 @@
     (() => {
       const storageKey = "torino-research-budget-v1";
       const defaults = [
-        { name: "國際機票", amount: 100000, grant: true, note: "臺灣－義大利，兩次來回" },
+        { name: "國際機票及接駁交通", amount: 140000, grant: true, note: "兩次來回機票約 130,000；米蘭－杜林接駁及行李交通 10,000" },
         { name: "住宿費", amount: 300000, grant: true, note: "約 €690／月，含部分住宿相關費用" },
         { name: "飲食費", amount: 180000, grant: true, note: "每月 15,000；研修期間生活費" },
         { name: "水電及網路", amount: 50000, grant: true, note: "每月約 4,200；確認是否已含租金" },
@@ -235,7 +235,21 @@
         try {
           const saved = JSON.parse(localStorage.getItem(storageKey));
           if (Array.isArray(saved) && saved.every((item) => item && typeof item.name === "string" && Number.isFinite(Number(item.amount)))) {
-            return saved.map((item) => ({ name: item.name, amount: Math.max(0, Number(item.amount)), grant: Boolean(item.grant), note: String(item.note || "") }));
+            let migrated = false;
+            const loaded = saved.map((item) => {
+              if (item.name === "國際機票") {
+                migrated = true;
+                return {
+                  name: "國際機票及接駁交通",
+                  amount: Number(item.amount) === 100000 ? 140000 : Math.max(0, Number(item.amount)),
+                  grant: Boolean(item.grant),
+                  note: "兩次來回機票約 130,000；米蘭－杜林接駁及行李交通 10,000"
+                };
+              }
+              return { name: item.name, amount: Math.max(0, Number(item.amount)), grant: Boolean(item.grant), note: String(item.note || "") };
+            });
+            if (migrated) localStorage.setItem(storageKey, JSON.stringify(loaded));
+            return loaded;
           }
         } catch { /* Use defaults when stored data is unavailable. */ }
         return defaults.map((item) => ({ ...item }));
