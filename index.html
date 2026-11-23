@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f2eb">
+  <title>杜林博士交換｜年度預算</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f4f2eb;
+      --surface: #fffefa;
+      --ink: #202720;
+      --muted: #68736a;
+      --line: #d8ddd4;
+      --green: #236b51;
+      --green-pale: #e7f1eb;
+      --coral: #bd4e3c;
+      --yellow: #e9bc4a;
+      --shadow: 0 16px 38px rgb(34 47 38 / 8%);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background-color: var(--paper);
+      background-image: radial-gradient(#c7cec3 0.65px, transparent 0.65px);
+      background-size: 14px 14px;
+      font-family: "Segoe UI", "Microsoft JhengHei", sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    button, input { font: inherit; }
+    button { color: inherit; }
+
+    .shell { width: min(1240px, calc(100% - 48px)); margin: 0 auto; }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      min-height: 72px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .wordmark { display: flex; align-items: center; gap: 11px; font-weight: 700; }
+    .mark { width: 13px; height: 13px; background: var(--coral); border-radius: 50% 50% 50% 3px; transform: rotate(-45deg); }
+    .term { color: var(--muted); font-size: 13px; }
+
+    .intro { padding: 38px 0 28px; }
+    .eyebrow { margin: 0 0 8px; color: var(--green); font-size: 12px; font-weight: 750; letter-spacing: .08em; }
+    h1 { margin: 0; font-family: Georgia, "Noto Serif TC", "Microsoft JhengHei", serif; font-size: clamp(26px, 4vw, 38px); font-weight: 600; line-height: 1.2; }
+    .intro-copy { max-width: 690px; margin: 12px 0 0; color: var(--muted); }
+
+    .layout { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(300px, .78fr); gap: 24px; align-items: start; padding-bottom: 42px; }
+    .ledger, .summary { background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow); }
+    .ledger { overflow: hidden; contain: paint; }
+
+    .ledger-head { display: flex; justify-content: space-between; align-items: center; gap: 18px; padding: 20px 22px 16px; border-bottom: 1px solid var(--line); }
+    .ledger-head h2, .summary h2 { margin: 0; font-size: 18px; }
+    .ledger-head p { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; text-align: left; }
+    th { padding: 10px 14px; color: var(--muted); background: #f7f7f1; font-size: 12px; font-weight: 650; white-space: nowrap; }
+    .group-row th { padding-top: 13px; padding-bottom: 9px; color: var(--green); background: #f1f5ef; font-size: 12px; }
+    .group-row:last-child th { color: var(--muted); background: #f7f7f1; }
+    th:first-child, td:first-child { padding-left: 22px; }
+    td { padding: 11px 14px; border-top: 1px solid #e8eae3; vertical-align: middle; }
+    tbody tr:hover { background: #fafaf5; }
+    .item-name { display: block; min-width: 142px; font-weight: 650; }
+    .item-note { display: block; max-width: 300px; margin-top: 2px; color: var(--muted); font-size: 12px; }
+    .amount-wrap { display: flex; align-items: center; gap: 7px; }
+    .currency { color: var(--muted); font-size: 12px; }
+    .amount-input { width: 132px; padding: 8px 9px; text-align: right; background: #fff; border: 1px solid var(--line); border-radius: 4px; font-variant-numeric: tabular-nums; }
+    .amount-input:focus, .name-input:focus, .note-input:focus { outline: 2px solid #83ad96; outline-offset: 1px; border-color: var(--green); }
+    .grant-cell { text-align: center; }
+    .grant-toggle { width: 18px; height: 18px; accent-color: var(--green); cursor: pointer; }
+    .remove-button { padding: 4px 7px; color: var(--muted); background: transparent; border: 0; cursor: pointer; }
+    .remove-button:hover { color: var(--coral); }
+    .custom-fields { display: grid; gap: 4px; }
+    .name-input, .note-input { width: 100%; min-width: 140px; padding: 5px 7px; border: 1px solid var(--line); border-radius: 3px; }
+    .note-input { color: var(--muted); font-size: 12px; }
+
+    .ledger-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding: 16px 22px; border-top: 1px solid var(--line); }
+    .button-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 38px; padding: 8px 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: 650; }
+    .button:hover { background: #f2f5ef; border-color: #abb9ac; }
+    .button-primary { color: #fff; background: var(--green); border-color: var(--green); }
+    .button-primary:hover { background: #19583f; border-color: #19583f; }
+    .button-danger { color: var(--coral); }
+    .button:focus-visible, .remove-button:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+
+    .summary { position: sticky; top: 18px; padding: 22px; }
+    .summary-top { display: flex; justify-content: space-between; align-items: start; gap: 12px; }
+    .year-tag { padding: 4px 8px; color: var(--green); background: var(--green-pale); border-radius: 3px; font-size: 12px; font-weight: 700; }
+    .primary-total { margin: 22px 0 4px; color: var(--green); font-family: Georgia, "Noto Serif TC", serif; font-size: clamp(32px, 4vw, 42px); font-variant-numeric: tabular-nums; line-height: 1.1; }
+    .total-label { color: var(--muted); font-size: 13px; }
+    .summary-divider { height: 1px; margin: 19px 0; background: var(--line); }
+    .stat-row { display: flex; justify-content: space-between; gap: 12px; margin: 12px 0; font-size: 14px; }
+    .stat-row strong { font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .stat-label { display: flex; align-items: center; gap: 8px; color: #49564c; }
+    .swatch { width: 9px; height: 9px; border-radius: 2px; background: var(--green); }
+    .swatch-muted { background: var(--yellow); }
+    .budget-bar { display: flex; height: 9px; overflow: hidden; margin: 16px 0 8px; background: #eceee7; border-radius: 2px; }
+    .bar-grant { width: 82.5%; background: var(--green); transition: width .2s ease; }
+    .bar-other { flex: 1; background: var(--yellow); transition: width .2s ease; }
+    .ratio-caption { display: flex; justify-content: space-between; color: var(--muted); font-size: 11px; }
+    .notice { margin: 21px 0 0; padding: 12px 13px; color: #5c4d2e; background: #fbf4dc; border-left: 3px solid var(--yellow); font-size: 12px; }
+    .saved-status { min-height: 18px; margin: 13px 0 0; color: var(--muted); font-size: 11px; }
+    .page-foot { display: flex; justify-content: space-between; gap: 18px; padding: 16px 0 24px; color: var(--muted); border-top: 1px solid var(--line); font-size: 12px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+    @media (max-width: 850px) {
+      .layout { grid-template-columns: 1fr; }
+      .summary { position: static; grid-row: 1; }
+      .primary-total { font-size: 36px; }
+    }
+
+    @media (max-width: 560px) {
+      .shell { width: min(100% - 28px, 1240px); }
+      .topbar { min-height: 60px; }
+      .term { font-size: 11px; }
+      .intro { padding-top: 28px; }
+      .ledger-head { align-items: flex-start; padding: 16px; }
+      th:first-child, td:first-child { padding-left: 14px; }
+      th, td { padding-right: 10px; padding-left: 10px; }
+      .amount-input { width: 112px; }
+      .ledger-foot { padding: 14px; }
+      .page-foot { flex-direction: column; gap: 4px; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .shell { width: 100%; }
+      .topbar, .ledger-foot, .remove-button, .page-foot, .notice, .saved-status { display: none !important; }
+      .intro { padding: 0 0 16px; }
+      .layout { display: block; }
+      .summary { position: static; margin-bottom: 16px; box-shadow: none; }
+      .ledger { box-shadow: none; }
+      .amount-input { padding: 0; border: 0; }
+      .grant-toggle { print-color-adjust: exact; }
+      th, .year-tag, .budget-bar { print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar shell">
+    <div class="wordmark"><span class="mark" aria-hidden="true"></span><span>TORINO / RESEARCH YEAR</span></div>
+    <span class="term">博士交換・12 個月預算</span>
+  </header>
+
+  <main class="shell">
+    <section class="intro" aria-labelledby="page-title">
+      <p class="eyebrow">POLITECNICO DI TORINO · 12 MONTHS</p>
+      <h1 id="page-title">把交換一年的預算，算清楚。</h1>
+      <p class="intro-copy">逐項調整年度花費，並選擇要納入研修補助規劃的項目。金額變動會即時更新，資料保存在這個瀏覽器。</p>
+    </section>
+
+    <div class="layout">
+      <section class="ledger" aria-labelledby="ledger-title">
+        <div class="ledger-head">
+          <div>
+            <h2 id="ledger-title">年度費用明細</h2>
+            <p>金額以新臺幣計；勾選欄為建議補助分類，可按校方規範調整。</p>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th scope="col">費用項目</th><th scope="col">年度金額</th><th scope="col" title="是否納入建議補助預算">列入補助</th><th scope="col"><span class="sr-only">移除</span></th></tr>
+            </thead>
+            <tbody id="budget-rows"></tbody>
+          </table>
+        </div>
+        <div class="ledger-foot">
+          <div class="button-row">
+            <button class="button button-primary" id="add-item" type="button">＋ 新增項目</button>
+            <button class="button" id="export-csv" type="button">↓ 匯出 CSV</button>
+            <button class="button" id="print-page" type="button">列印預算</button>
+          </div>
+          <button class="button button-danger" id="reset-budget" type="button">還原初始值</button>
+        </div>
+      </section>
+
+      <aside class="summary" aria-labelledby="summary-title">
+        <div class="summary-top">
+          <div><p class="eyebrow">BUDGET OVERVIEW</p><h2 id="summary-title">一年預算摘要</h2></div>
+          <span class="year-tag">12 個月</span>
+        </div>
+        <p class="primary-total" id="total-expenses" aria-live="polite">NT$ 1,200,000</p>
+        <div class="total-label">交換一年總花費預算</div>
+        <div class="summary-divider"></div>
+        <div class="stat-row"><span class="stat-label"><span class="swatch" aria-hidden="true"></span>建議列入補助</span><strong id="total-grant">NT$ 990,000</strong></div>
+        <div class="stat-row"><span class="stat-label"><span class="swatch swatch-muted" aria-hidden="true"></span>未列入補助</span><strong id="total-personal">NT$ 210,000</strong></div>
+        <div class="budget-bar" role="img" aria-label="補助預算與未列入補助預算比例"><span class="bar-grant" id="grant-bar"></span><span class="bar-other" id="personal-bar"></span></div>
+        <div class="ratio-caption"><span id="grant-ratio">補助規劃 82.5%</span><span id="personal-ratio">其他支出 17.5%</span></div>
+        <p class="notice">此處「建議列入補助」僅為預算規劃分類，不代表核定。第三國研討會與研究機構交流須由學校認定為研修必要環節；各項補助與核銷依校內規定辦理。</p>
+        <p class="saved-status" id="saved-status" role="status">修改會自動儲存在此瀏覽器。</p>
+      </aside>
+    </div>
+
+    <footer class="page-foot"><span>研究方向：FPGA · RTL 硬體加速 · IC 設計</span><span>費用估算僅供交換規劃與討論</span></footer>
+  </main>
+
+  <script>
+    (() => {
+      const storageKey = "torino-research-budget-v1";
+      const defaults = [
+        { name: "國際機票", amount: 100000, grant: true, note: "臺灣－義大利，兩次來回" },
+        { name: "住宿費", amount: 300000, grant: true, note: "約 €690／月，含部分住宿相關費用" },
+        { name: "飲食費", amount: 180000, grant: true, note: "每月 15,000；研修期間生活費" },
+        { name: "水電及網路", amount: 50000, grant: true, note: "每月約 4,200；確認是否已含租金" },
+        { name: "當地交通", amount: 35000, grant: true, note: "市區交通及必要移動" },
+        { name: "日用品及衣物", amount: 50000, grant: false, note: "每月約 4,200；一般個人生活雜費" },
+        { name: "娛樂及個人支出", amount: 60000, grant: false, note: "社交、休閒等個人支出" },
+        { name: "簽證及居留", amount: 10000, grant: true, note: "申請及行政費用" },
+        { name: "海外醫療保險", amount: 20000, grant: true, note: "一年保險" },
+        { name: "研究及學術用品", amount: 30000, grant: true, note: "文具、資料及研究用品" },
+        { name: "學校行政費", amount: 15000, grant: true, note: "註冊及必要行政支出" },
+        { name: "初期安置費", amount: 20000, grant: false, note: "寢具、廚具及生活用品" },
+        { name: "第三國研討會差旅", amount: 150000, grant: true, note: "機票、報名、住宿及差旅" },
+        { name: "其他研究機構交流", amount: 100000, grant: true, note: "交通、住宿及必要研究交流費" },
+        { name: "緊急預備金", amount: 80000, grant: false, note: "匯率波動及突發支出" }
+      ];
+
+      const rows = document.querySelector("#budget-rows");
+      const status = document.querySelector("#saved-status");
+      const money = new Intl.NumberFormat("zh-TW", { maximumFractionDigits: 0 });
+      let items = loadItems();
+      let statusTimer;
+
+      function loadItems() {
+        try {
+          const saved = JSON.parse(localStorage.getItem(storageKey));
+          if (Array.isArray(saved) && saved.every((item) => item && typeof item.name === "string" && Number.isFinite(Number(item.amount)))) {
+            return saved.map((item) => ({ name: item.name, amount: Math.max(0, Number(item.amount)), grant: Boolean(item.grant), note: String(item.note || "") }));
+          }
+        } catch { /* Use defaults when stored data is unavailable. */ }
+        return defaults.map((item) => ({ ...item }));
+      }
+
+      function saveItems() {
+        try {
+          localStorage.setItem(storageKey, JSON.stringify(items));
+          status.textContent = "已儲存於此瀏覽器。";
+        } catch {
+          status.textContent = "瀏覽器無法儲存；請匯出 CSV 備份。";
+        }
+        clearTimeout(statusTimer);
+        statusTimer = setTimeout(() => { status.textContent = "修改會自動儲存在此瀏覽器。"; }, 2400);
+      }
+
+      function addCell(row, content, className) {
+        const cell = document.createElement("td");
+        if (className) cell.className = className;
+        cell.append(content);
+        row.append(cell);
+        return cell;
+      }
+
+      function renderRows() {
+        rows.replaceChildren();
+        const groups = [
+          { grant: true, label: "列入建議補助" },
+          { grant: false, label: "未列入補助" }
+        ];
+        groups.forEach((group) => {
+          const groupItems = items.map((item, index) => ({ item, index })).filter(({ item }) => item.grant === group.grant);
+          if (!groupItems.length) return;
+
+          const headingRow = document.createElement("tr");
+          headingRow.className = "group-row";
+          const heading = document.createElement("th");
+          heading.colSpan = 4;
+          heading.scope = "rowgroup";
+          heading.textContent = `${group.label}（${groupItems.length} 項）`;
+          headingRow.append(heading);
+          rows.append(headingRow);
+
+          groupItems.forEach(({ item, index }) => {
+          const row = document.createElement("tr");
+          row.dataset.itemIndex = index;
+          if (item.custom) {
+            const fields = document.createElement("div");
+            fields.className = "custom-fields";
+            const name = document.createElement("input");
+            name.className = "name-input";
+            name.type = "text";
+            name.value = item.name;
+            name.maxLength = 60;
+            name.setAttribute("aria-label", "自訂費用項目名稱");
+            name.addEventListener("input", () => {
+              items[index].name = name.value;
+              const label = name.value.trim() || "自訂費用項目";
+              row.querySelector(".amount-input").setAttribute("aria-label", `${label}年度預算金額`);
+              row.querySelector(".grant-toggle").setAttribute("aria-label", `將「${label}」納入補助預算`);
+              row.querySelector(".remove-button").setAttribute("aria-label", `移除「${label}」`);
+              saveItems();
+            });
+            const note = document.createElement("input");
+            note.className = "note-input";
+            note.type = "text";
+            note.value = item.note;
+            note.maxLength = 120;
+            note.placeholder = "補充說明（選填）";
+            note.setAttribute("aria-label", "自訂費用說明");
+            note.addEventListener("input", () => { items[index].note = note.value; saveItems(); });
+            fields.append(name, note);
+            addCell(row, fields);
+          } else {
+            const description = document.createElement("div");
+            const label = document.createElement("span");
+            label.className = "item-name";
+            label.textContent = item.name;
+            const note = document.createElement("span");
+            note.className = "item-note";
+            note.textContent = item.note;
+            description.append(label, note);
+            addCell(row, description);
+          }
+
+          const amountWrap = document.createElement("div");
+          amountWrap.className = "amount-wrap";
+          const currency = document.createElement("span");
+          currency.className = "currency";
+          currency.textContent = "NT$";
+          const amount = document.createElement("input");
+          amount.className = "amount-input";
+          amount.type = "number";
+          amount.min = "0";
+          amount.step = "1000";
+          amount.inputMode = "numeric";
+          amount.value = item.amount;
+          amount.setAttribute("aria-label", `${item.name}年度預算金額`);
+          amount.addEventListener("input", () => {
+            items[index].amount = Math.max(0, Number(amount.value) || 0);
+            updateTotals();
+            saveItems();
+          });
+          amountWrap.append(currency, amount);
+          addCell(row, amountWrap);
+
+          const grant = document.createElement("input");
+          grant.className = "grant-toggle";
+          grant.type = "checkbox";
+          grant.checked = item.grant;
+          grant.setAttribute("aria-label", `將「${item.name}」納入補助預算`);
+          grant.addEventListener("change", () => {
+            items[index].grant = grant.checked;
+            renderRows();
+            updateTotals();
+            saveItems();
+            rows.querySelector(`tr[data-item-index="${index}"] .grant-toggle`)?.focus();
+          });
+          addCell(row, grant, "grant-cell");
+
+          const remove = document.createElement("button");
+          remove.className = "remove-button";
+          remove.type = "button";
+          remove.textContent = "移除";
+          remove.setAttribute("aria-label", `移除「${item.name}」`);
+          remove.addEventListener("click", () => {
+            items.splice(index, 1);
+            render();
+            saveItems();
+          });
+          addCell(row, remove);
+          rows.append(row);
+          });
+        });
+      }
+
+      function updateTotals() {
+        const total = items.reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
+        const grant = items.reduce((sum, item) => sum + (item.grant ? Number(item.amount) || 0 : 0), 0);
+        const other = total - grant;
+        const grantPercent = total ? grant / total * 100 : 0;
+        const otherPercent = total ? other / total * 100 : 0;
+        document.querySelector("#total-expenses").textContent = `NT$ ${money.format(total)}`;
+        document.querySelector("#total-grant").textContent = `NT$ ${money.format(grant)}`;
+        document.querySelector("#total-personal").textContent = `NT$ ${money.format(other)}`;
+        document.querySelector("#grant-ratio").textContent = `補助規劃 ${grantPercent.toFixed(1)}%`;
+        document.querySelector("#personal-ratio").textContent = `其他支出 ${otherPercent.toFixed(1)}%`;
+        document.querySelector("#grant-bar").style.width = `${grantPercent}%`;
+        document.querySelector("#personal-bar").style.flex = `${otherPercent} 1 0%`;
+        document.querySelector(".budget-bar").setAttribute("aria-label", `補助預算 ${grantPercent.toFixed(1)}%，其他支出 ${otherPercent.toFixed(1)}%`);
+      }
+
+      function render() { renderRows(); updateTotals(); }
+
+      document.querySelector("#add-item").addEventListener("click", () => {
+        items.push({ name: "新費用項目", amount: 0, grant: false, note: "", custom: true });
+        render();
+        saveItems();
+        rows.querySelector("tr:last-child .name-input")?.focus();
+      });
+
+      document.querySelector("#reset-budget").addEventListener("click", () => {
+        if (!window.confirm("還原所有項目、金額與補助勾選為初始值？")) return;
+        items = defaults.map((item) => ({ ...item }));
+        render();
+        saveItems();
+      });
+
+      document.querySelector("#export-csv").addEventListener("click", () => {
+        const quote = (value) => `"${String(value).replaceAll('"', '""')}"`;
+        const lines = [["費用項目", "年度預算（NTD）", "列入建議補助", "說明"], ...items.map((item) => [item.name, item.amount, item.grant ? "是" : "否", item.note])];
+        lines.push(["一年總花費預算", items.reduce((sum, item) => sum + Number(item.amount || 0), 0), "", ""]);
+        lines.push(["建議列入補助預算", items.reduce((sum, item) => sum + (item.grant ? Number(item.amount || 0) : 0), 0), "", ""]);
+        const csv = "\uFEFF" + lines.map((line) => line.map(quote).join(",")).join("\r\n");
+        const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "杜林博士交換年度預算.csv";
+        link.click();
+        URL.revokeObjectURL(url);
+      });
+
+      document.querySelector("#print-page").addEventListener("click", () => window.print());
+      render();
+    })();
+  </script>
+</body>
+</html>
